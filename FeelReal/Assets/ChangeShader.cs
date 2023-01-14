@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChangeShader : MonoBehaviour
 {
     public AudioLoudness audioLoudness;
+    public AudioSource source;
     public Vector3 scaleMin;
     public Vector3 scaleMax;
     public Material material;
@@ -18,9 +19,13 @@ public class ChangeShader : MonoBehaviour
 
     public float threshold = 0.1f;
     public float loudnessSensitivity = 50;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        // transform is 0
+        transform.localScale = new Vector3(0, 0, 0);
         rend = GetComponent<Renderer>();
         colorMin = new Color(1, 0, 0.9423084f, 1);
         colorMax = new Color(0.01568627f, 1, 0.9014204f, 1);
@@ -34,28 +39,80 @@ public class ChangeShader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float loudness = audioLoudness.GetLoudnessFromMic() * loudnessSensitivity;
-        if (loudness < threshold) loudness = 0;
-        // smooth the loudness value to be very smooth and between scaleMin and scaleMax
-        float smoothLoudness = Mathf.Lerp(scaleMin.x, scaleMax.x, loudness);
-        // smooth according time delta
-        smoothLoudness = Mathf.Lerp(transform.localScale.x, smoothLoudness, Time.deltaTime / 0.5f);
-        
-        // Debug.Log(smoothLoudness);
-        // scale the object
-        transform.localScale = new Vector3(smoothLoudness, smoothLoudness, smoothLoudness);
-        // change the wave frequency and amplitude based on loudness and smooth it
-        waveFrequency = Mathf.Lerp(waveFrequency, loudness * 4, Time.deltaTime / 0.5f);
-        waveAmplitude = Mathf.Lerp(waveAmplitude, loudness * 0.5f, Time.deltaTime / 0.5f);
-        
-       // set the material
-        rend.material.SetColor("_ColorMax", colorMax);
-        rend.material.SetColor("_ColorMin", colorMin);
-        rend.material.SetFloat("_Glossiness", glossiness);
-        rend.material.SetFloat("_Metallic", metallic);
-        rend.material.SetFloat("_Frequency", waveFrequency);
-        rend.material.SetFloat("_Size", waveAmplitude);
+        if (GameManager.stageState == 1)
+        {
+            ExpandOverTime(0.7f);
+        }
+        else if (GameManager.stageState == 2)
+        {
+            bool idle = GameManager.isRecording;
+            float loudness = 0;
+            if (GameManager.isPlaying)
+            {
+                idle = false;
+                loudness = GameManager.GetLoudness(GameManager.clipStart, source.clip) * 30f;
+                // Debug.Log(loudness);
+            }
+            else
+            {
+                loudness = (idle) ? GameManager.GetLoudnessFromMic() * loudnessSensitivity : 0.2f;
+            }
+            if (loudness < threshold)
+            {
+                loudness = 0.2f;
+                // time 2 seconds
+            }
+            // smooth the loudness value to be very smooth and between scaleMin and scaleMax
+            float smoothLoudness = Mathf.Lerp(scaleMin.x, scaleMax.x, loudness);
+            // smooth according time delta
+            smoothLoudness = Mathf.Lerp(transform.localScale.x, smoothLoudness, Time.deltaTime / 0.5f);
+            // scale the object
+            transform.localScale = new Vector3(smoothLoudness, smoothLoudness, smoothLoudness);
+            // change the wave frequency and amplitude based on loudness and smooth it
+            waveFrequency = idle ? Mathf.Lerp(waveFrequency, loudness * 2, Time.deltaTime / 10f) : 1f;
+            waveAmplitude = idle ? Mathf.Lerp(waveAmplitude, loudness * 0.5f, Time.deltaTime / 2f) : 1.2f;
+            colorMax = !idle ? new Color(1, 1, 1, 1) : new Color(1, 0, 0.9423084f, 1);
+            colorMin = !idle ? new Color(1, 1, 1, 1) : new Color(0.01568627f, 1, 0.9014204f, 1);
+            // set the material
+            rend.material.SetColor("_ColorMax", colorMax);
+            rend.material.SetColor("_ColorMin", colorMin);
+            rend.material.SetFloat("_Glossiness", glossiness);
+            rend.material.SetFloat("_Metallic", metallic);
+            rend.material.SetFloat("_Frequency", waveFrequency);
+            rend.material.SetFloat("_Size", waveAmplitude);
+        }
+        else
+        {
+            GameManager.isPlaying = false;
+        }
 
     }
-    
+
+    void ExpandOverTime(float time)
+    {
+        StartCoroutine(Expand(time));
+        GameManager.stageState = 2;
+    }
+
+    IEnumerator Expand(float time)
+    {
+        float t = 0;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(new Vector3(0, 0, 0), scaleMin, t / time);
+            rend.material.SetFloat("_Frequency", 1);
+            rend.material.SetFloat("_Size", 1 - t / time);
+            yield return null;
+        }
+    }
+
+    public void ChangeAudio(AudioClip clip)
+    {
+        // change audio source of this object
+        source.clip = clip;
+    }
+
+
+
 }

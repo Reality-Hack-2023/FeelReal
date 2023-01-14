@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2129357732723786921
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -8,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeartMat
-  m_Shader: {fileID: -6465566751694194690, guid: 9690217cb256f3c42b17f84a7751146e, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: d4e8ca1797a9c2d45a2a8d5db2b26d70, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -22,6 +35,10 @@ Material:
     m_TexEnvs:
     - _BumpMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CubemapAsset_0d83710432694d718c04d04f5542f58a_Out_0:
+        m_Texture: {fileID: 8900000, guid: 575fedce8e14adf46a790c6c9343b8e1, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubemapAsset_28c87f6679744994b7d2837997d91047_Out_0:
@@ -80,6 +97,18 @@ Material:
         m_Texture: {fileID: 8400000, guid: 3a9394f524e614847bb78061b0059910, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
@@ -91,12 +120,14 @@ Material:
     - _EmissionMultiplier: 3.8
     - _Frequency: 4.63
     - _GlossMapScale: 1
-    - _Glossiness: 0.88
+    - _Glossiness: 0.71
     - _GlossyReflections: 1
-    - _Metallic: 0.49
+    - _Metallic: 0.43
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Size: 0.7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -105,8 +136,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMax: {r: 0, g: 0.939759, b: 1, a: 0}
-    - _ColorMin: {r: 0.06132078, g: 1, b: 0.12352246, a: 0}
+    - _ColorMax: {r: 0.3037113, g: 0.8258565, b: 0.8584906, a: 0}
+    - _ColorMin: {r: 0.020247417, g: 0.115577176, b: 0.8584906, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1900794242891920487

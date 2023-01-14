@@ -8,7 +8,6 @@ public class RenderCameraToCubemap : MonoBehaviour
     public Camera camera;
     public RenderTexture rt;
 
-    [System.Obsolete]
     private void Start()
     {
         camera.RenderToCubemap(rt);
