@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CubemapAsset_28c87f6679744994b7d2837997d91047_Out_0:
+        m_Texture: {fileID: 8900000, guid: 575fedce8e14adf46a790c6c9343b8e1, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -60,7 +64,19 @@ Material:
         m_Texture: {fileID: 8900000, guid: 575fedce8e14adf46a790c6c9343b8e1, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleReflectedCubemap_0521b681df424fd6bc7331d04f2e6a29_Cube_1:
+        m_Texture: {fileID: 8900000, guid: 575fedce8e14adf46a790c6c9343b8e1, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2DLOD_7a528b98f0d549e7b33faf61e05bf050_Texture_1:
+        m_Texture: {fileID: 8400000, guid: 3a9394f524e614847bb78061b0059910, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b98d0aa381c94796b545eaa2f6288fab_Texture_1:
+        m_Texture: {fileID: 8400000, guid: 3a9394f524e614847bb78061b0059910, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_e351ac32ae10469cbb601373f6efe44a_Texture_1:
         m_Texture: {fileID: 8400000, guid: 3a9394f524e614847bb78061b0059910, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -89,8 +105,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMax: {r: 0.6745283, g: 0.9797983, b: 1, a: 0}
-    - _ColorMin: {r: 0, g: 0.6509434, b: 0.042682588, a: 0}
+    - _ColorMax: {r: 0, g: 0.939759, b: 1, a: 0}
+    - _ColorMin: {r: 0.06132078, g: 1, b: 0.12352246, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1900794242891920487

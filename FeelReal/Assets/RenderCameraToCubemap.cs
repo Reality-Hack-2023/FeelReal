@@ -8,9 +8,13 @@ public class RenderCameraToCubemap : MonoBehaviour
     public Camera camera;
     public RenderTexture rt;
 
+    [System.Obsolete]
     private void Start()
     {
-        camera.RenderToCubemap(rt); 
+        camera.RenderToCubemap(rt);
+        camera.RenderToCubemap(cubemap);
+
+        rt.isCubemap = true;
     }
     void LateUpdate()
     {
