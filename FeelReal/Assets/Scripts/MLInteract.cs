@@ -18,19 +18,18 @@ public class MLInteract : MonoBehaviour
     public async Task getMood()
     {
         Debug.Log("Get MOOD");
-        await getAPI("http://127.0.0.1:8000/ser");
+
+        //Set a timer for 10s
+        //await getAPI("http://127.0.0.1:8000/ser");
+
+        string[] moodes = new string[] { "\"CALM\"", "\"ANGRY\"", "\"DISGUST\"", "\"FEARFUL\"", "\"HAPPY\"", "\"NEUTRAL\"", "\"SAD\"", "\"SURPRISED\"" };
+        
+        //Random random = new Random();
+        emotion = moodes[(int)Random.Range(0, moodes.Length)];
+
+        
         playSounds();
     }
-
-    // private void getAPI(string api)
-    // {
-    //     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(api);
-    //     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-    //     StreamReader reader = new StreamReader(response.GetResponseStream());
-    //     string jsonResponse = reader.ReadToEnd();
-    //     emotion = jsonResponse;
-    // }
-
     private async Task getAPI(string api)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(api);
@@ -49,6 +48,8 @@ public class MLInteract : MonoBehaviour
     {
         // get the script attached to the heart
         GameObject heart = GameObject.FindWithTag("Heart");
+        GameObject bg = GameObject.Find("BackgroundChanger");
+        BackgroundChanger bgChanger = bg.GetComponent<BackgroundChanger>();
         ChangeShader heartScript = heart.GetComponent<ChangeShader>();
         AudioSource audio = GameObject.FindWithTag("as").GetComponent<AudioSource>();
         switch (emotion)
@@ -56,34 +57,42 @@ public class MLInteract : MonoBehaviour
             case "\"CALM\"":
                 audio.clip = Resources.Load("Calm") as AudioClip;
                 heartScript.ChangeColor(new Color(0, 26 / 255f, 1, 1), new Color(0, 1, 209 / 255f, 1));
+                bgChanger.SetNewColors(new Color(19/255f, 29/255f, 64 / 255f), new Color(116 / 255f, 142 / 255f, 233 / 255f), 0.28f, 3);
                 break;
             case "\"ANGRY\"":
                 audio.clip = Resources.Load("Angry") as AudioClip;
                 heartScript.ChangeColor(new Color(0, 148 / 255f, 1, 1), new Color(1, 0, 0, 1));
+                bgChanger.SetNewColors(new Color(67 / 255f, 36 / 255f, 8 / 255f), new Color(214 / 255f, 117 / 255f, 28 / 255f), 0.28f, 3);
                 break;
             case "\"DISGUST\"":
                 audio.clip = Resources.Load("Disgust") as AudioClip;
                 heartScript.ChangeColor(new Color(0, 1, 102 / 255f, 1), new Color(1, 61 / 255f, 0, 1));
+                bgChanger.SetNewColors(new Color(67 / 255f, 36 / 255f, 8 / 255f), new Color(214 / 255f, 117 / 255f, 28 / 255f), 0.28f, 3);
                 break;
             case "\"FEARFUL\"":
                 audio.clip = Resources.Load("Fearful") as AudioClip;
                 heartScript.ChangeColor(new Color(1 / 255f, 49 / 255f, 119 / 255f, 1), new Color(117 / 255f, 9 / 255f, 168 / 255f, 1));
+                bgChanger.SetNewColors(new Color(19 / 255f, 29 / 255f, 64 / 255f), new Color(0 / 255f, 13 / 255f, 134 / 255f), 0.28f, 3);
                 break;
             case "\"HAPPY\"":
                 audio.clip = Resources.Load("Joyful") as AudioClip;
                 heartScript.ChangeColor(new Color(1, 0, 0, 1), new Color(1, 184 / 255f, 0, 1));
+                bgChanger.SetNewColors(new Color(19 / 255f, 29 / 255f, 64 / 255f), new Color(116 / 255f, 142 / 255f, 233 / 255f), 0.28f, 3);
                 break;
             case "\"NEUTRAL\"":
                 audio.clip = Resources.Load("Neutral") as AudioClip;
                 heartScript.ChangeColor(new Color(1, 1, 1, 1), new Color(1, 1, 1, 1));
+                bgChanger.SetNewColors(new Color(19 / 255f, 29 / 255f, 64 / 255f), new Color(0 / 255f, 13 / 255f, 134 / 255f), 0.28f, 3);
                 break;
             case "\"SAD\"":
                 audio.clip = Resources.Load("Sad") as AudioClip;
                 heartScript.ChangeColor(new Color(0, 0, 0, 1), new Color(0, 26 / 255f, 1, 1));
+                bgChanger.SetNewColors(new Color(19 / 255f, 29 / 255f, 64 / 255f), new Color(0 / 255f, 13 / 255f, 134 / 255f), 0.28f, 3);
                 break;
             case "\"SURPRISED\"":
                 audio.clip = Resources.Load("Surprise") as AudioClip;
                 heartScript.ChangeColor(new Color(191 / 255f, 226 / 255, 91 / 255f, 1), new Color(1, 0, 0, 1));
+                bgChanger.SetNewColors(new Color(67 / 255f, 36 / 255f, 8 / 255f), new Color(214 / 255f, 117 / 255f, 28 / 255f), 0.28f, 3);
                 break;
         }
         Debug.Log(emotion);

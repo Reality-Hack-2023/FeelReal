@@ -8,12 +8,14 @@ public class StageTransitions : MonoBehaviour
 
     public GameObject sphereNode;
     public GameObject containerNode;
+    public GameObject pointCloud;
     public Vector3 groundPos;
     public Vector3 restPos;
     public Vector3 cloudPos;
     void Start()
     {
         containerNode.transform.position = groundPos;
+        pointCloud.transform.position = cloudPos;
     }
 
     // Update is called once per frame
@@ -30,6 +32,8 @@ public class StageTransitions : MonoBehaviour
         if (GameManager.stageState >= 3)
         {
             MoveToPos(cloudPos, 5, 0.5f);
+            MovePointCloud(restPos, 5, 0.5f);
+            
         }
     }
 
@@ -48,6 +52,13 @@ public class StageTransitions : MonoBehaviour
         float t = time * Time.deltaTime;
         t = t * t * (3f - 2f * t)*speed;
         containerNode.transform.position = Vector3.Lerp(containerNode.transform.position, pos, t);
+    }
+
+    void MovePointCloud(Vector3 pos, float time, float speed)
+    {
+        float t = time * Time.deltaTime;
+        t = t * t * (3f - 2f * t) * speed;
+        pointCloud.transform.position = Vector3.Lerp(containerNode.transform.position, pos, t);
     }
 
 }

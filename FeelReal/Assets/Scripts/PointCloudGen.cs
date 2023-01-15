@@ -2,110 +2,91 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleCloudGen : MonoBehaviour
+public class PointCloudGen : MonoBehaviour
 {
 
     public GameObject particleCloudPrefab;
     public GameObject audioLoudnessPrefab;
     public int numPoints;
-    private List<GameObject> pointClouds = new List<GameObject>();
     public float minDistance = 3;
-    public int radius;
+    public float length = 100;
+    public float zRange = 25;
+    public float amplitude = 1;
+    public float frequency = 1;
+    public float stretchFactor = 10;
+    public Material[] materials;  // assign different colors in the Unity editor
+
+    private List<GameObject> pointClouds = new List<GameObject>();
 
     void Start()
     {
-        Vector3 vec = new Vector3(0f, 0f, 0f);
-        genPointCloud(vec);
+        materials = new Material[9];
+        for (int i = 0; i < 9; i++)
+        {
+            materials[i] = new Material(Shader.Find("Unlit/Color"));
+            materials[i].color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        }
+        genPointCloud(GameObject.Find("Point").transform.position);
     }
 
-    void genPointCloud(Vector3 origin)
+    float offset = 0;
+
+    void Update()
     {
-        for (int i = 0; i < numPoints; i++)
+        float deltaTime = Time.deltaTime;
+        float animationSpeed = 2.0f;
+        float bottomAmplitude = -amplitude;
+        float topAmplitude = amplitude;
+        offset += Time.deltaTime * animationSpeed;
+        foreach (GameObject pointCloud in pointClouds)
         {
-            float theta = Random.Range(0f, 2f * Mathf.PI);
-            float v = Random.Range(0, 1f);
-            float u = Random.Range(0, 1f);
-            float phi = Mathf.Acos(2f * v - 1f);
-            float x = Mathf.Sqrt(1f - Mathf.Pow(u, 2)) * Mathf.Cos(theta);
-            float y = u;
-            float z = Mathf.Sqrt(1f - Mathf.Pow(u, 2)) * Mathf.Sin(theta);
-            Vector3 pos = new Vector3(x, y, z) * radius;
-            int runs = 0;
-            while (!isValidPosition(pos))
-            {
-                if (++runs >= 100) break;
-                float newTheta = Random.Range(0f, 2f * Mathf.PI);
-                float newV = Random.Range(0, 1f);
-                float newU = Random.Range(0, 1f);
-                float newPhi = Mathf.Acos(2f * newV - 1f);
-                float newX = Mathf.Sqrt(1f - Mathf.Pow(newU, 2)) * Mathf.Cos(newTheta);
-                float newY = newU;
-                float newZ = Mathf.Sqrt(1f - Mathf.Pow(newU, 2)) * Mathf.Sin(newTheta);
-                Vector3 newPos = new Vector3(newX, newY, newZ) * radius;
-                newPos += origin;
-                pos = newPos;
-            }
-            if (runs >= 100)
-            {
-                Debug.Log("Only Generated " + i + " nodes");
-                break;
-            }
-            GameObject pointCloud = Instantiate(particleCloudPrefab, pos, Quaternion.identity);
-            if (pos.x >= 0 && pos.z >= 0)
-            {
-                if (pos.x >= pos.z)
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 1);
-                }
-                else
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(0, 1, 0, 1);
-                }
-            }
-            else if (pos.x < 0 && pos.z >= 0)
-            {
-                if (pos.x <= pos.z)
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
-                }
-                else
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(1, 1, 0, 1);
-                }
-            }
-            else if (pos.x < 0 && pos.z < 0)
-            {
-                if (pos.x <= pos.z)
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(1, 0, 1, 1);
-                }
-                else
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(0, 1, 1, 1);
-                }
-            }
-            else
-            {
-                if (pos.x >= pos.z)
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(1, 0.5f, 0, 1);
-                }
-                else
-                {
-                    pointCloud.GetComponent<Renderer>().material.color = new Color(0.5f, 0, 1, 1);
-                }
-            }
-            pointCloud.transform.position = pos + origin;
-            pointClouds.Add(pointCloud);
+            Vector3 currentPosition = pointCloud.transform.position;
+            float animationValue = amplitude * Mathf.Sin((pointCloud.transform.position.x + offset) * frequency);
+            Vector3 newPosition = new Vector3(currentPosition.x, animationValue, currentPosition.z);
+            pointCloud.transform.position = Vector3.Lerp(currentPosition, newPosition, deltaTime);
         }
     }
 
-    bool isValidPosition(Vector3 pos)
+
+    void genPointCloud(Vector3 origin)
+    {
+        for (int j = 0; j < zRange * 4; j += 4)
+        {
+            float z = j;
+            for (int i = 0; i < numPoints; i++)
+            {
+                float newX = i * (length / numPoints) - length / 2;
+                float x = i * (length / numPoints) - length / 2;
+                float y = amplitude * Mathf.Cos(x * frequency * stretchFactor);
+                Vector3 pos = new Vector3(x, y, z);
+                int runs = 0;
+                while (!isValidPosition(pos, origin))
+                {
+                    if (++runs >= 100) break;
+                    newX = i * (length / numPoints) - length / 2;
+                    float newY = amplitude * Mathf.Sin(newX * frequency * stretchFactor);
+                    float newZ = Random.Range(-zRange / 2, zRange / 2);
+                    Vector3 newPos = new Vector3(newX, newY, newZ);
+                    pos = newPos;
+                }
+                if (runs >= 100)
+                {
+                    Debug.Log("Only Generated " + i + " nodes");
+                    break;
+                }
+                GameObject pointCloud = Instantiate(particleCloudPrefab, pos + origin, Quaternion.identity);
+                pointCloud.GetComponent<Renderer>().material = materials[(int)((newX + length / 2) / (length / 9)) % 9];
+                pointClouds.Add(pointCloud);
+            }
+        }
+
+    }
+
+    bool isValidPosition(Vector3 pos, Vector3 origin)
     {
         for (int i = 0; i < pointClouds.Count; i++)
         {
-            if (Vector3.Distance(pos, pointClouds[i].transform.position) < minDistance)
-                return false;
+            if (Vector3.Distance(pos, pointClouds[i].transform.position - origin) < minDistance) return false;
         }
         return true;
     }
