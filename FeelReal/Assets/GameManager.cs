@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static AudioClip micClip;
-    private static int sampleWindow = 1028;
+    private static int sampleWindow = 1024;
     public static float micLoudness;
     public static bool isRecording = false;
 
@@ -29,6 +29,28 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
+    public static IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float lerpTime = 1)
+    {
+        float _timeStartedLerping = Time.time;
+        float timeSinceStarted = Time.time - _timeStartedLerping;
+        float percentageComplete = timeSinceStarted / lerpTime;
+
+        while (true)
+        {
+            timeSinceStarted = Time.time - _timeStartedLerping;
+            percentageComplete = timeSinceStarted / lerpTime;
+
+            float currentValue = Mathf.Lerp(start, end, percentageComplete);
+
+            cg.alpha = currentValue;
+
+            if (percentageComplete >= 1) break;
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     public static float GetLoudnessFromMic()
     {
         return GetLoudness(Microphone.GetPosition(Microphone.devices[0]), micClip);
@@ -68,7 +90,8 @@ public class GameManager : MonoBehaviour
 
         float[] samples = new float[sampleWindow];
         source.clip.GetData(samples, source.timeSamples);
-        float sum = 0;
+ 
+        float sum = 0; 
         for (int i = 0; i < sampleWindow; i++)
         {
             sum += Mathf.Abs(samples[i]);
@@ -77,12 +100,14 @@ public class GameManager : MonoBehaviour
         {
             clipStart += sampleWindow;
         }
-        if (clipStart >= source.timeSamples)
+        //Debug.Log(clipStart + " " + source.clip.samples);
+        if (clipStart >= source.clip.samples)
         {
             isPlaying = false;
             clipStart = 0;
             stageState = 3;
         }
+        Debug.Log(samples);
         return sum / sampleWindow;
 
     }
