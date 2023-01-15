@@ -112,6 +112,7 @@ public class ChangeShader : MonoBehaviour
     {
         // change audio source of this object
         source.clip = clip;
+        source.Play();
     }
 
     public void ChangeColor(Color min, Color max)

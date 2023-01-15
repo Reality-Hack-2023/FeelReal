@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static AudioClip micClip;
-    private static int sampleWindow = 1024;
+    private static int sampleWindow = 512;
     public static float micLoudness;
     public static bool isRecording = false;
 
@@ -89,11 +89,12 @@ public class GameManager : MonoBehaviour
         clipStart += sampleWindow;
 
         float[] samples = new float[sampleWindow];
-        source.clip.GetData(samples, source.timeSamples);
+        source.GetOutputData(samples, 0);
  
         float sum = 0; 
         for (int i = 0; i < sampleWindow; i++)
         {
+            Debug.Log(samples[i]);
             sum += Mathf.Abs(samples[i]);
         }
         if (isPlaying)
@@ -107,7 +108,6 @@ public class GameManager : MonoBehaviour
             clipStart = 0;
             stageState = 3;
         }
-        Debug.Log(samples);
         return sum / sampleWindow;
 
     }

@@ -92,7 +92,6 @@ public class MLInteract : MonoBehaviour
 
         GameManager.isPlaying = true;
         GameManager.clipStart = 0;
-        audio.Play();
     }
 
     public static AudioClip SetSampleRate(AudioClip clip, int frequency)
