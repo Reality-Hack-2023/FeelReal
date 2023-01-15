@@ -18,13 +18,14 @@ public class Timer : MonoBehaviour
 
         rend = timerVisual.GetComponent<Renderer>();
         rend.material = material;
+        Debug.Log(rend.material);
     }
 
     void Update()
     {
         if (GameManager.isRecording)
         {
-            if (startTime < 0) startTime = Time.deltaTime;
+            if (startTime < 0) startTime = Time.time;
 
             if (finnished)
             {
@@ -32,11 +33,14 @@ public class Timer : MonoBehaviour
                 return;
             }
 
-            float t = totalTime - (Time.deltaTime - startTime);
+            float t = totalTime - (Time.time - startTime);
             GameManager.timeremaining = t / 10f;
+            Debug.Log(t);
 
             //link variable
             rend.material.SetFloat("_CompletionSlider", GameManager.timeremaining);
+
+            Debug.Log(rend.material.GetFloat("_CompletionSlider"));
 
             if (t <= 0f)
             {

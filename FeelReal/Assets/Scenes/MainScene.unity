@@ -340,7 +340,7 @@ MonoBehaviour:
   timerText: {fileID: 66671095}
   material: {fileID: 2100000, guid: 9ca3a7402a268e344bebca6d351744b8, type: 2}
   rend: {fileID: 1796561554}
-  timerVisual: {fileID: 66671093}
+  timerVisual: {fileID: 1796561552}
 --- !u!114 &66671095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sample text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
