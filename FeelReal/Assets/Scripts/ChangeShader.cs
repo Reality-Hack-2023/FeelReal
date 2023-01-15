@@ -40,23 +40,21 @@ public class ChangeShader : MonoBehaviour
     void Update()
     {
         Debug.Log("State: " + GameManager.stageState);
-        if (GameManager.stageState == 1)
-        {
-            ExpandOverTime(0.7f);
-        }
-        else if (GameManager.stageState == 2)
+        if (GameManager.stageState == 2)
         {
             bool idle = GameManager.isRecording;
             float loudness = 0;
             if (GameManager.isPlaying)
             {
                 idle = false;
-                loudness = GameManager.GetLoudnessFromWAV(GameManager.clipStart, source) * 10f;
+                loudness = GameManager.GetLoudnessFromWAV(GameManager.clipStart, source) * 40f;
+                scaleMin = new Vector3(0.3f, 0.3f, 0.3f);
+                scaleMax = new Vector3(5.0f, 5.0f, 5.0f);
                 Debug.Log(loudness);
             }
             else
             {
-                loudness = (idle) ? GameManager.GetLoudnessFromMic() * loudnessSensitivity : 0.2f;
+                loudness = (idle) ? GameManager.GetLoudnessFromMic() * loudnessSensitivity : 1f;
             }
             if (loudness < threshold)
             {
@@ -89,7 +87,7 @@ public class ChangeShader : MonoBehaviour
 
     }
 
-    void ExpandOverTime(float time)
+    public void ExpandOverTime(float time)
     {
         StartCoroutine(Expand(time));
         GameManager.stageState = 2;

@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     public static void micToAudioClip()
     {
         string device = Microphone.devices[0];
-        micClip = Microphone.Start(device, true, timer, AudioSettings.outputSampleRate);
+        micClip = Microphone.Start(device, true, timer, 44100);
     }
 
     public static float GetLoudness(int clipPosition, AudioClip clip)
@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
         {
             isPlaying = false;
             clipStart = 0;
-            stageState = 3;
         }
         return sum / sampleWindow;
     }
@@ -101,8 +100,8 @@ public class GameManager : MonoBehaviour
         {
             clipStart += sampleWindow;
         }
-        //Debug.Log(clipStart + " " + source.clip.samples);
-        if (clipStart >= source.clip.samples)
+        Debug.Log(clipStart + " " + source.clip.samples);
+        if (!source.isPlaying|| clipStart >= source.clip.samples-sampleWindow)
         {
             isPlaying = false;
             clipStart = 0;

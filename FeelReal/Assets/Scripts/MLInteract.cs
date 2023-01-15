@@ -88,7 +88,7 @@ public class MLInteract : MonoBehaviour
         }
         Debug.Log(emotion);
         // call the function on the script
-        heartScript.ChangeAudio(SetSampleRate(audio.clip, AudioSettings.outputSampleRate));
+        heartScript.ChangeAudio(SetSampleRate(audio.clip, 44100));
 
         GameManager.isPlaying = true;
         GameManager.clipStart = 0;

@@ -2063,7 +2063,7 @@
         "m_SerializableColors": []
     },
     "m_Cubemap": {
-        "m_SerializedCubemap": "{\"cubemap\":{\"fileID\":8900000,\"guid\":\"575fedce8e14adf46a790c6c9343b8e1\",\"type\":2}}",
+        "m_SerializedCubemap": "{\"cubemap\":{\"fileID\":8900000,\"guid\":\"75531ee60cd0cfc42b4cbb88ecac0203\",\"type\":2}}",
         "m_Guid": ""
     }
 }
