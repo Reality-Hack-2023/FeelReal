@@ -3,65 +3,93 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class MLInteract : MonoBehaviour
 {
     public string emotion;
 
-    void Start() { }
 
-    public void getMood()
+    void Start()
     {
-        getAPI("http://127.0.0.1:8000/ser");
+
+    }
+
+    public async Task getMood()
+    {
+        await getAPI("http://127.0.0.1:8000/ser");
         playSounds();
     }
 
-    private void getAPI(string api)
+    // private void getAPI(string api)
+    // {
+    //     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(api);
+    //     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+    //     StreamReader reader = new StreamReader(response.GetResponseStream());
+    //     string jsonResponse = reader.ReadToEnd();
+    //     emotion = jsonResponse;
+    // }
+
+    private async Task getAPI(string api)
     {
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(api);
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        StreamReader reader = new StreamReader(response.GetResponseStream());
-        string jsonResponse = reader.ReadToEnd();
-        emotion = jsonResponse;
+        using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+        {
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                string jsonResponse = await reader.ReadToEndAsync();
+                emotion = jsonResponse;
+            }
+        }
+        return;
     }
 
     private void playSounds()
     {
+        // get the script attached to the heart
+        GameObject heart = GameObject.FindWithTag("Heart");
+        ChangeShader heartScript = heart.GetComponent<ChangeShader>();
         AudioSource audio = GameObject.FindWithTag("as").GetComponent<AudioSource>();
         switch (emotion)
         {
-            case "\"ANGRY\"":
-                audio.clip = Resources.Load("Angry") as AudioClip; ;
-                break;
             case "\"CALM\"":
-                audio.clip = Resources.Load("Calm") as AudioClip; ;
+                audio.clip = Resources.Load("Calm") as AudioClip;
+                heartScript.ChangeColor(new Color(0, 26 / 255f, 1, 1), new Color(0, 1, 209 / 255f, 1));
+                break;
+            case "\"ANGRY\"":
+                audio.clip = Resources.Load("Angry") as AudioClip;
+                heartScript.ChangeColor(new Color(0, 148 / 255f, 1, 1), new Color(1, 0, 0, 1));
                 break;
             case "\"DISGUST\"":
-                audio.clip = Resources.Load("Disgust") as AudioClip; ;
+                audio.clip = Resources.Load("Disgust") as AudioClip;
+                heartScript.ChangeColor(new Color(0, 1, 102 / 255f, 1), new Color(1, 61 / 255f, 0, 1));
                 break;
             case "\"FEARFUL\"":
-                audio.clip = Resources.Load("Fearful") as AudioClip; ;
+                audio.clip = Resources.Load("Fearful") as AudioClip;
+                heartScript.ChangeColor(new Color(1 / 255f, 49 / 255f, 119 / 255f, 1), new Color(117 / 255f, 9 / 255f, 168 / 255f, 1));
                 break;
             case "\"HAPPY\"":
-                audio.clip = Resources.Load("Joyful") as AudioClip; ;
+                audio.clip = Resources.Load("Joyful") as AudioClip;
+                heartScript.ChangeColor(new Color(1, 0, 0, 1), new Color(1, 184 / 255f, 0, 1));
                 break;
             case "\"NEUTRAL\"":
-                audio.clip = Resources.Load("Neutral") as AudioClip; ;
+                audio.clip = Resources.Load("Neutral") as AudioClip;
+                heartScript.ChangeColor(new Color(1, 1, 1, 1), new Color(1, 1, 1, 1));
                 break;
             case "\"SAD\"":
-                audio.clip = Resources.Load("Sad") as AudioClip; ;
+                audio.clip = Resources.Load("Sad") as AudioClip;
+                heartScript.ChangeColor(new Color(0, 0, 0, 1), new Color(0, 26 / 255f, 1, 1));
                 break;
             case "\"SURPRISED\"":
-                audio.clip = Resources.Load("Surprise") as AudioClip; ;
+                audio.clip = Resources.Load("Surprise") as AudioClip;
+                heartScript.ChangeColor(new Color(191 / 255f, 226 / 255, 91 / 255f, 1), new Color(1, 0, 0, 1));
                 break;
         }
         Debug.Log(emotion);
-        // get gameobject with tag of Heart
-        GameObject heart = GameObject.FindWithTag("Heart");
-        // get the script attached to the heart
-        ChangeShader heartScript = heart.GetComponent<ChangeShader>();
         // call the function on the script
         heartScript.ChangeAudio(SetSampleRate(audio.clip, AudioSettings.outputSampleRate));
+
+        GameManager.isPlaying = true;
         GameManager.clipStart = 0;
         audio.Play();
     }

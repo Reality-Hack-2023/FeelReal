@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static AudioClip micClip;
-    private static int sampleWindow = 64;
+    private static int sampleWindow = 1028;
     public static float micLoudness;
     public static bool isRecording = false;
 
@@ -60,6 +60,29 @@ public class GameManager : MonoBehaviour
         }
         return sum / sampleWindow;
     }
+    public static float GetLoudnessFromWAV(int clipPosition, AudioSource source)
+    {
+        clipStart += sampleWindow;
 
+        float[] samples = new float[sampleWindow];
+        source.clip.GetData(samples, source.timeSamples);
+        float sum = 0;
+        for (int i = 0; i < sampleWindow; i++)
+        {
+            sum += Mathf.Abs(samples[i]);
+        }
+        if (isPlaying)
+        {
+            clipStart += sampleWindow;
+        }
+        if (clipStart >= source.timeSamples)
+        {
+            isPlaying = false;
+            clipStart = 0;
+            stageState = 3;
+        }
+        return sum / sampleWindow;
+
+    }
 
 }

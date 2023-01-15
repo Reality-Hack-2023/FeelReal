@@ -115,10 +115,11 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Density: 20
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EmissionMultiplier: 3.8
-    - _Frequency: 4.63
+    - _Frequency: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.71
     - _GlossyReflections: 1
@@ -128,7 +129,7 @@ Material:
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 0.7
+    - _Size: 0.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

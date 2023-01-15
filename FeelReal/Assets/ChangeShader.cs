@@ -50,8 +50,8 @@ public class ChangeShader : MonoBehaviour
             if (GameManager.isPlaying)
             {
                 idle = false;
-                loudness = GameManager.GetLoudness(GameManager.clipStart, source.clip) * 30f;
-                // Debug.Log(loudness);
+                Debug.Log(source.clip);
+                loudness = GameManager.GetLoudnessFromWAV(GameManager.clipStart, source) * 10f;
             }
             else
             {
@@ -65,7 +65,7 @@ public class ChangeShader : MonoBehaviour
             // smooth the loudness value to be very smooth and between scaleMin and scaleMax
             float smoothLoudness = Mathf.Lerp(scaleMin.x, scaleMax.x, loudness);
             // smooth according time delta
-            smoothLoudness = Mathf.Lerp(transform.localScale.x, smoothLoudness, Time.deltaTime / 0.5f);
+            smoothLoudness = Mathf.Lerp(transform.localScale.x, smoothLoudness, Time.deltaTime / 2f);
             // scale the object
             transform.localScale = new Vector3(smoothLoudness, smoothLoudness, smoothLoudness);
             // change the wave frequency and amplitude based on loudness and smooth it
@@ -74,8 +74,8 @@ public class ChangeShader : MonoBehaviour
             colorMax = !idle ? new Color(1, 1, 1, 1) : new Color(1, 0, 0.9423084f, 1);
             colorMin = !idle ? new Color(1, 1, 1, 1) : new Color(0.01568627f, 1, 0.9014204f, 1);
             // set the material
-            rend.material.SetColor("_ColorMax", colorMax);
-            rend.material.SetColor("_ColorMin", colorMin);
+            //rend.material.SetColor("_ColorMax", colorMax);
+            //rend.material.SetColor("_ColorMin", colorMin);
             rend.material.SetFloat("_Glossiness", glossiness);
             rend.material.SetFloat("_Metallic", metallic);
             rend.material.SetFloat("_Frequency", waveFrequency);
@@ -111,6 +111,26 @@ public class ChangeShader : MonoBehaviour
     {
         // change audio source of this object
         source.clip = clip;
+    }
+
+    public void ChangeColor(Color min, Color max)
+    {
+        StartCoroutine(ColorChangeOverTime(1, min, max));
+        
+    }
+
+    IEnumerator ColorChangeOverTime(float time, Color min, Color max)
+    {
+        float t = 0;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            Color colorMinGrad = Color.Lerp(colorMin, min, t);
+            Color colorMaxGrad = Color.Lerp(colorMax, max, t);
+            rend.material.SetColor("_ColorMin", colorMinGrad);
+            rend.material.SetColor("_ColorMax", colorMaxGrad);
+            yield return null;
+        }
     }
 
 

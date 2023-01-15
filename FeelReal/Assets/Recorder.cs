@@ -112,7 +112,6 @@ namespace Recorder
             Microphone.End(Microphone.devices[0]);
             Save();
             MLInteract ml = new MLInteract();
-            GameManager.isPlaying = true;
             ml.getMood();
         }
         public void StartTimer()
