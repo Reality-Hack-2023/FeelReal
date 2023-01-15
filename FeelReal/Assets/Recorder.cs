@@ -118,6 +118,8 @@ namespace Recorder
         {
             Debug.Log("timer started");
 
+            // link variable somehow
+
             InvokeRepeating("Countdown", 1, 1);
         }
 

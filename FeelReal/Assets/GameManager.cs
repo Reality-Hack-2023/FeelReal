@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public static bool isPlaying = false;
     public static int timer = 10;
 
+    public static float timeremaining = 1.0f;
+
     public static int stageState = 0;
     // Start is called before the first frame update
     void Start()

@@ -38,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubemapAsset_0d83710432694d718c04d04f5542f58a_Out_0:
-        m_Texture: {fileID: 8900000, guid: 575fedce8e14adf46a790c6c9343b8e1, type: 2}
+        m_Texture: {fileID: 8900000, guid: 75531ee60cd0cfc42b4cbb88ecac0203, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubemapAsset_28c87f6679744994b7d2837997d91047_Out_0:
